@@ -10,7 +10,7 @@ const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = process.env.MONGODB_URI;
 
 const app = express();
-const PORT = process.env.PORT 
+const PORT = process.env.PORT
 app.use(cors());
 app.use(express.json());
 
@@ -28,6 +28,11 @@ async function run() {
 
         const db = client.db('wanderlust')
         const destinationCollection = db.collection('destinations')
+
+        app.get('/destination', async (req, res) => {
+            const result = await destinationCollection.find().toArray();
+            res.json(result);
+        })
 
         app.post('/destination', async (req, res) => {
             const destinationData = req.body;
